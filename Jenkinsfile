@@ -1,10 +1,6 @@
 pipeline {
   agent any
 
-  tools {
-    'sonar-scanner' 'sonar-scanner'
-  }
-
   environment {
     SONARQUBE_SERVER = 'SonarQube-Server'
     IMAGE_NAME = 'jenkins-sonar-trivy-lab'
@@ -27,6 +23,7 @@ pipeline {
     stage('Install & Test') {
       steps {
         sh '''
+          set -e
           python --version
           python -m venv .venv
           . .venv/bin/activate
@@ -40,7 +37,12 @@ pipeline {
       steps {
         withSonarQubeEnv("${SONARQUBE_SERVER}") {
           sh '''
+            set -e
             echo "Running SonarQube scan..."
+
+            SCANNER_HOME="$(tool 'sonar-scanner')"
+            export PATH="$SCANNER_HOME/bin:$PATH"
+
             sonar-scanner
           '''
         }
@@ -58,6 +60,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         sh '''
+          set -e
           echo "Building docker image..."
           docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
         '''
@@ -67,6 +70,7 @@ pipeline {
     stage('Trivy Scan (Image)') {
       steps {
         sh '''
+          set -e
           echo "Running Trivy scan via Docker (no install needed)..."
           docker run --rm \
             -v /var/run/docker.sock:/var/run/docker.sock \
