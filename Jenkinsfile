@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  tools {
+    sonarScanner 'sonar-scanner'
+  }
+
   environment {
     SONARQUBE_SERVER = 'SonarQube-Server'
     IMAGE_NAME = 'jenkins-sonar-trivy-lab'
