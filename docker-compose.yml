@@ -25,7 +25,7 @@ services:
     environment:
       - JENKINS_URL=http://jenkins:8080
       - JENKINS_AGENT_NAME=docker-agent-1
-      - JENKINS_SECRET=REPLACE_ME
+      - JENKINS_SECRET=aae0b3fee5c3f6cb5b13a287a48b8e0ab516fc742a7d6d7a91fe31a053993f6a
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - trivy-cache:/root/.cache
