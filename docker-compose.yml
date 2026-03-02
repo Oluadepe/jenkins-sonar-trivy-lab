@@ -20,7 +20,9 @@ services:
     restart: unless-stopped
 
   docker-agent:
-    image: jenkins/inbound-agent:latest-jdk17
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
     container_name: docker-agent
     depends_on:
       - jenkins
