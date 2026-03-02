@@ -21,7 +21,7 @@ services:
 
   docker-agent:
     image: jenkins/inbound-agent:latest-jdk17
-    container_name: jenkins-docker-agent
+    container_name: docker-agent
     depends_on:
       - jenkins
     environment:
